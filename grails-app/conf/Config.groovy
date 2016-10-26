@@ -117,4 +117,9 @@ log4j = {
            'org.springframework',
            'org.hibernate',
            'net.sf.ehcache.hibernate'
+   
+	warn	'grails.app.taglib'
+	
+	all		'grails.app'// Set level for all APPLICATION artefacts
+		   
 }
