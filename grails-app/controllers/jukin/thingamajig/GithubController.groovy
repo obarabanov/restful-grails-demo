@@ -4,12 +4,10 @@ import groovy.json.JsonSlurper
 
 class GithubController {
 
-    //	TODO:	re-direct to list
 	def index = {
-        render "<H1>Hello World</H1>"
+        redirect(action: "list")
     }
 
-    //def list = {
     def list() {
 		
 		def started = new Date()
@@ -17,8 +15,9 @@ class GithubController {
 		def accessToken='f0c3134e73eef152ae784ccab218cc2935319fd3'
 		
 		def language = 'groovy'
-		def query = "https://api.github.com/search/repositories?q=language:${language}&sort=stars&order=desc&access_token=${accessToken}"
 		//	"https://api.github.com/repositories?access_token=${accessToken}"
+		def query = "https://api.github.com/search/repositories?q=language:${language}&sort=stars&order=desc&access_token=${accessToken}"
+		query += '&per_page=20'
 		
         def text = queryGit( query )
 		
@@ -33,12 +32,14 @@ class GithubController {
 			def full_name = map.full_name
 			
             // get commits info
-            def url = "https://api.github.com/repos/${full_name}/commits?access_token=${accessToken}"
+            //def url = "https://api.github.com/repos/${full_name}/commits?access_token=${accessToken}"
+            def url = "https://api.github.com/repos/${full_name}/commits?per_page=1&access_token=${accessToken}"
             def newText = queryGit(url)
             if (newText) {
-                def newReposJson = new JsonSlurper().parseText(newText)
-				
-				def last = (newReposJson as List)[0] as Map
+                def commitsJson = new JsonSlurper().parseText(newText)
+				def resList = commitsJson as List
+				//log.trace "commits number: ${resList.size()}"
+				def last = resList[0] as Map
 				
                 map.put 'last', last
                 //map.put 'lastCommit', last.commit.author.date
