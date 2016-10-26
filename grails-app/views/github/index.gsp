@@ -83,30 +83,19 @@
 	<body>
 		<div id="status" role="complementary">
             <div id="controller-list" role="navigation">
-			<h1>Public Github Repos</h1>
-			<p>
-                %{--<%=--}%
-                    %{--json.each { Map it ->--}%
-                        %{--out << "<p>${it.full_name} ${it.description} ${it.html_url} ${it.url} ${it.type} ${it.fork}</p>"--}%
-                    %{--}--}%
-                 %{--%>--}%
-            <g:each in="${json}">
-                <h2>${it.full_name}</h2>
-                ${it.description}<br/>
-                <a href="${it.url}">${it.html_url}</a><br/>
-                Latest commit: ${it.lastCommit}<br/>
-            </g:each>
-            </p>
+				<h1>Public Github Repos</h1>
+				<h2>shown top ${found} for 'Groovy' language, sorted by stars</h2>
+				<hr>
+				<p>
+		            <g:each in="${json}">
+		                <h2>${it.full_name}</h2>
+		                <span style="float:right;">stars: ${it.stargazers_count}</span>
+		                ${it.description}<br/>
+		                <a href="${it.html_url}">${it.html_url}</a><br/>
+		                Latest <a href="${it.last?.html_url}">commit</a> made at: ${it.last?.commit.author.date} by: ${it.last?.commit.author.name}<br/>
+		            </g:each>
+	            </p>
             </div>
-
-			%{--<div id="controller-list" role="navigation">--}%
-				%{--<h2>Available Controllers:</h2>--}%
-				%{--<ul>--}%
-					%{--<g:each var="c" in="${grailsApplication.controllerClasses.sort { it.fullName } }">--}%
-						%{--<li class="controller"><g:link controller="${c.logicalPropertyName}">${c.fullName}</g:link></li>--}%
-					%{--</g:each>--}%
-				%{--</ul>--}%
-			%{--</div>--}%
 		</div>
 	</body>
 </html>
