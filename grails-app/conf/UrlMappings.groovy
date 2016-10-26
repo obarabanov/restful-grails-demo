@@ -7,7 +7,8 @@ class UrlMappings {
             }
         }
 
-        "/"(view:"/index")
+        "/"(controller: "github", action: "list")
+        //"/"(view:"/index")
         "500"(view:'/error')
 	}
 }
