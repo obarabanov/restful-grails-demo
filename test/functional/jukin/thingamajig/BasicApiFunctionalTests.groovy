@@ -61,7 +61,7 @@ class BasicApiFunctionalTests extends Specification {
 
     def "test Vote can be fetched"() {
         when:
-        def response = rest.put("${baseUrl}/votes/1") {
+        def response = rest.get("${baseUrl}/votes/1") {
             accept JSON
         }
 
