@@ -93,6 +93,10 @@
 		                ${it.description}<br/>
 		                <a href="${it.html_url}">${it.html_url}</a><br/>
 		                Latest <a href="${it.last?.html_url}">commit</a> made at: ${it.last?.commit.author.date} by: ${it.last?.commit.author.name}<br/>
+		                
+		                <br/>
+		                <g:link controller="vote" action="list" params="[repoUrl: it.html_url]">Votes</g:link>
+		                
 		            </g:each>
 	            </p>
             </div>
