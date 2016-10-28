@@ -11,8 +11,12 @@ class VoteControllerSpec extends Specification {
 
     def populateValidParams(params) {
         assert params != null
-        // TODO: Populate valid properties like...
-        //params["name"] = 'someValidName'
+		
+        // Populate valid properties like...
+        params["name"] = 'Tester One'
+        params["repoUrl"] = 'https://github.com/java-decompiler/jd-gui'
+        params["voteValue"] = 'LIKE'
+        params["name"] = 'something to say 1..'
     }
 
     void "Test the index action returns the correct model"() {
@@ -50,16 +54,17 @@ class VoteControllerSpec extends Specification {
             populateValidParams(params)
             vote = new Vote(params)
 
-            controller.save(vote)
+            controller.saveFromUI(vote)
 
-        then:"A redirect is issued to the show action"
-            response.redirectedUrl == '/vote/show/1'
-            controller.flash.message != null
+        then:"A redirect is issued to the /list action"
+			response.status == 302
             Vote.count() == 1
+			
     }
 
     void "Test that the show action returns the correct model"() {
-        when:"The show action is executed with a null domain"
+        
+		when:"The show action is executed with a null domain"
             controller.show(null)
 
         then:"A 404 error is returned"
@@ -70,35 +75,21 @@ class VoteControllerSpec extends Specification {
             def vote = new Vote(params)
             controller.show(vote)
 
-        then:"A model is populated containing the domain instance"
-            model.voteInstance == vote
-    }
-
-    void "Test that the edit action returns the correct model"() {
-        when:"The edit action is executed with a null domain"
-            controller.edit(null)
-
         then:"A 404 error is returned"
             response.status == 404
-
-        when:"A domain instance is passed to the edit action"
-            populateValidParams(params)
-            def vote = new Vote(params)
-            controller.edit(vote)
-
-        then:"A model is populated containing the domain instance"
-            model.voteInstance == vote
+		
     }
 
     void "Test the update action performs an update on a valid domain instance"() {
-        when:"Update is called for a domain instance that doesn't exist"
+		
+		when:"Update is called for a domain instance that doesn't exist"
             request.contentType = FORM_CONTENT_TYPE
             controller.update(null)
 
-        then:"A 404 error is returned"
-            response.redirectedUrl == '/vote/index'
+        then:"A redirect made"
+            response.redirectedUrl == '/votes'
             flash.message != null
-
+			
 
         when:"An invalid domain instance is passed to the update action"
             response.reset()
@@ -109,6 +100,7 @@ class VoteControllerSpec extends Specification {
         then:"The edit view is rendered again with the invalid instance"
             view == 'edit'
             model.voteInstance == vote
+			
 
         when:"A valid domain instance is passed to the update action"
             response.reset()
@@ -117,33 +109,8 @@ class VoteControllerSpec extends Specification {
             controller.update(vote)
 
         then:"A redirect is issues to the show action"
-            response.redirectedUrl == "/vote/show/$vote.id"
-            flash.message != null
+        	response.status == 302
+            response.redirectedUrl == '/votes/1'
     }
 
-    void "Test that the delete action deletes an instance if it exists"() {
-        when:"The delete action is called for a null instance"
-            request.contentType = FORM_CONTENT_TYPE
-            controller.delete(null)
-
-        then:"A 404 is returned"
-            response.redirectedUrl == '/vote/index'
-            flash.message != null
-
-        when:"A domain instance is created"
-            response.reset()
-            populateValidParams(params)
-            def vote = new Vote(params).save(flush: true)
-
-        then:"It exists"
-            Vote.count() == 1
-
-        when:"The domain instance is passed to the delete action"
-            controller.delete(vote)
-
-        then:"The instance is deleted"
-            Vote.count() == 0
-            response.redirectedUrl == '/vote/index'
-            flash.message != null
-    }
 }

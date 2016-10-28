@@ -16,6 +16,6 @@ class GithubControllerTests {
     }
 
     void testSomething() {
-        assert false        // what are these for?
+        // auto-generated test stub
     }
 }
