@@ -22,10 +22,22 @@ class VoteController {
 		render view: 'list', model:[voteInstanceList: found, voteInstanceCount: found?.size(), repoUrl: repoUrl ]  
     }
 
-    def create() {
+    /**
+     * Get UI view for vote creation.
+     * 
+     * @return
+     */
+	def create() {
 		render view: 'create', model: [voteInstance: new Vote(params)]
     }
-
+	
+	/**
+	 * Specific action to be used from UI.
+	 * Provides re-direction after saving completion.
+	 *  
+	 * @param voteInstance
+	 * @return
+	 */
 	@Transactional
 	def saveFromUI(Vote voteInstance) {
 		
@@ -44,9 +56,7 @@ class VoteController {
 
 		voteInstance.save flush:true
 
-		//list( voteInstance.repoUrl )
 		redirect action: 'list', params: [repoUrl: voteInstance.repoUrl]
-
 	}
 
 
