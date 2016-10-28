@@ -2,7 +2,8 @@ package jukin.thingamajig
 
 import grails.rest.Resource;
 
-@Resource(uri='/votes', formats=['json', 'xml']) //	TODO:	REST mapping exclude DELETE
+//@Resource(uri='/votes', formats=['json', 'xml']) // this basically works, except there is no way to exclude DELETE method
+@Resource(formats=['json', 'xml']) // must be used with resource mapping in UrlMappings.groovy
 class Vote {
 
 	String name			// voter's name

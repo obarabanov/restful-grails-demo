@@ -8,7 +8,10 @@ class UrlMappings {
         }
 
         "/"(controller: "github", action: "list")
-        //"/"(view:"/index")
+		
+		"/votes"(resources:'vote', excludes:['delete'])
+		
+        "/home"(view:"/index")
         "500"(view:'/error')
 	}
 }
