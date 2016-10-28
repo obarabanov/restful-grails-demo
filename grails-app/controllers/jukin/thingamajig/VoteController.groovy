@@ -8,7 +8,7 @@ import grails.transaction.Transactional
 @Transactional(readOnly = true)
 class VoteController {
 
-    static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
+    static allowedMethods = [save: "POST", update: "PUT"]
 
     /**
      * Get votes per a repo, rendered in UI.
@@ -18,7 +18,7 @@ class VoteController {
      */
 	def list(String repoUrl) {
 		def found = Vote.findAllByRepoUrl(repoUrl)
-		//respond found, view: 'index', model:[voteInstanceCount: found.count()]  // return JSON
+		//respond found, view: 'index', model:[voteInstanceCount: found.count()]  // returns JSON
 		render view: 'list', model:[voteInstanceList: found, voteInstanceCount: found?.size(), repoUrl: repoUrl ]  
     }
 
@@ -27,7 +27,7 @@ class VoteController {
     }
 
 	@Transactional
-	def save(Vote voteInstance) {
+	def saveFromUI(Vote voteInstance) {
 		
 		log.debug "params: $params"
 		log.debug "param Vote: $voteInstance"
@@ -45,7 +45,8 @@ class VoteController {
 		voteInstance.save flush:true
 
 		//list( voteInstance.repoUrl )
-		redirect action: 'list', params: [repoUrl: voteInstance.repoUrl]  
+		redirect action: 'list', params: [repoUrl: voteInstance.repoUrl]
+
 	}
 
 
@@ -58,17 +59,10 @@ class VoteController {
        	respond Vote.list(params), model:[voteInstanceCount: Vote.count()]
     }
 
-	/*
-	def create() {
-		respond new Vote(params)
-	}
-	*/
-
-    def show(Vote voteInstance) {
+	def show(Vote voteInstance) {
         respond voteInstance
     }
 
-    /*
 	@Transactional
     def save(Vote voteInstance) {
 		
@@ -91,11 +85,6 @@ class VoteController {
             }
             '*' { respond voteInstance, [status: CREATED] }
         }
-    }
-    */
-
-    def edit(Vote voteInstance) {
-        respond voteInstance
     }
 
     @Transactional
@@ -121,7 +110,20 @@ class VoteController {
         }
     }
 
-    @Transactional
+	/*
+	 def edit(Vote voteInstance) {
+		 respond voteInstance
+	 }
+	 */
+ 
+	/*
+	 def create() {
+		 respond new Vote(params)
+	 }
+	 */
+ 
+    /*
+	@Transactional
     def delete(Vote voteInstance) {
 
         if (voteInstance == null) {
@@ -139,6 +141,7 @@ class VoteController {
             '*'{ render status: NO_CONTENT }
         }
     }
+    */
 
     protected void notFound() {
         request.withFormat {

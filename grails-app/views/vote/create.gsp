@@ -31,11 +31,7 @@
 			</ul>
 			</g:hasErrors>
 			
-			<g:form url="[resource:voteInstance, action:'save']"
-				>
-				<%--
-				 params="[repoUrl: voteInstance?.repoUrl]"
-				--%>
+			<g:form url="[resource:voteInstance, action:'saveFromUI']">
 				 
 				<fieldset class="form">
 				

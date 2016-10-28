@@ -15,7 +15,7 @@
 				<li><g:link class="create" action="create" params="[repoUrl: repoUrl]"><g:message code="default.new.label" args="[entityName]" /></g:link></li>
 			</ul>
 		</div>
-		<div id="list-vote" class="content scaffold-list" role="main">
+		<div id="list-vote" class="content scaffold-list" role="main" style="padding-left: 10px;">
 			
 			<h1>Votes for GitHub repo: <a href="${repoUrl}">${repoUrl}</a></h1>
 			
@@ -23,47 +23,23 @@
 				<div class="message" role="status">${flash.message}</div>
 			</g:if>
 			
-			<table>
-				<thead>
-					<tr>
-					
-						<%--
-						TODO:	convert into plain 'comments' list page
-						--%>
-					
-					
-						<g:sortableColumn property="name" title="${message(code: 'vote.name.label', default: 'Name')}" />
-						
-						<g:sortableColumn property="voteValue" title="${message(code: 'vote.voteValue.label', default: 'Vote Value')}" />
-					
-						<g:sortableColumn property="comment" title="${message(code: 'vote.comment.label', default: 'Comment')}" />
-						
-						<%--
-						<g:sortableColumn property="repoUrl" title="${message(code: 'vote.repoUrl.label', default: 'Repo Url')}" />
-						--%>
-					
-					</tr>
-				</thead>
-				<tbody>
-				<g:each in="${voteInstanceList}" status="i" var="voteInstance">
-					<tr class="${(i % 2) == 0 ? 'even' : 'odd'}">
-					
-						<td>${fieldValue(bean: voteInstance, field: "name")}</td>
-						
-						<td>${fieldValue(bean: voteInstance, field: "voteValue")}</td>
-						
-						<td><textarea style="width: 100%; height: 40px;" readonly="readonly">${fieldValue(bean: voteInstance, field: "comment")}</textarea></td>
-					
-						<%--
-						<td><g:link action="show" id="${voteInstance.id}">${fieldValue(bean: voteInstance, field: "comment")}</g:link></td>
-						
-						<td>${fieldValue(bean: voteInstance, field: "repoUrl")}</td>
-						--%>
-					
-					</tr>
-				</g:each>
-				</tbody>
-			</table>
+			<g:each in="${voteInstanceList}" status="i" var="voteInstance">
+				
+				<br/>
+				Name: ${fieldValue(bean: voteInstance, field: "name")}
+				voted: ${fieldValue(bean: voteInstance, field: "voteValue")}
+				
+				<br/>
+				<br/>
+			
+				Comment: ${fieldValue(bean: voteInstance, field: "comment")}
+				
+				<br/><br/>
+				
+				<hr/>
+			
+			</g:each>
+				
 			
 			<div class="pagination">
 				<g:paginate total="${voteInstanceCount ?: 0}" />
