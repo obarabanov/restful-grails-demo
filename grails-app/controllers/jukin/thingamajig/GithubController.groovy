@@ -3,6 +3,11 @@ package jukin.thingamajig
 import groovy.json.JsonSlurper
 
 class GithubController {
+	
+	static defaultAction = "list"
+	//	against GitHub's access limit
+	static accessToken='f0c3134e73eef152ae784ccab218cc2935319fd3'
+	
 
 	def index = {
         redirect(action: "list")
@@ -12,12 +17,11 @@ class GithubController {
 		
 		def started = new Date()
 		
-		def accessToken='f0c3134e73eef152ae784ccab218cc2935319fd3'
-		
 		def language = 'groovy'
 		//	"https://api.github.com/repositories?access_token=${accessToken}"
 		def query = "https://api.github.com/search/repositories?q=language:${language}&sort=stars&order=desc&access_token=${accessToken}"
 		query += '&per_page=20'
+		//query += '&per_page=2' // for testing
 		
         def text = queryGit( query )
 		
@@ -32,8 +36,8 @@ class GithubController {
 			def full_name = map.full_name
 			
             // get commits info
-            //def url = "https://api.github.com/repos/${full_name}/commits?access_token=${accessToken}"
-            def url = "https://api.github.com/repos/${full_name}/commits?per_page=1&access_token=${accessToken}"
+            def url = "https://api.github.com/repos/${full_name}/commits?access_token=${accessToken}"
+			url += '&per_page=1'	// to get latest commit only
             def newText = queryGit(url)
             if (newText) {
                 def commitsJson = new JsonSlurper().parseText(newText)
@@ -56,7 +60,7 @@ class GithubController {
 		render(view: 'index', model: model, contentType: 'text/html')
 
     }
-
+	
     public static def queryGit(String urlToRead) {
 
         URL url;

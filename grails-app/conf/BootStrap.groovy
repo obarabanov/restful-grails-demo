@@ -11,14 +11,14 @@ class BootStrap {
 				//	for demo purposes
 				new Vote(
 					name: "Tester One",
-					repoUrl: 'http://localhost:8080/jukin-thingamajig/votes',
+					repoUrl: 'https://github.com/java-decompiler/jd-gui',
 					voteValue: 'LIKE',
 					comment: "something to say 1.."
 				).save( flush: true )
 				
 				new Vote(
 					name: "Tester Two",
-					repoUrl: 'http://localhost:8080/jukin-thingamajig/votes',
+					repoUrl: 'https://github.com/Netflix/asgard',
 					voteValue: 'DISLIKE',
 					comment: "comment goes here.."
 				).save( flush: true )
